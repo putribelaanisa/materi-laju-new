@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Laju Reaksi — Bahan Bacaan Siswa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F5F6F1; --panel:#FFFFFF; --ink:#182A22; --sub:#4B5B52;
+  --accent:#3C6E52; --accent2:#B4592A; --line:#DCE0D6; --chip:#EEF1E9;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#141C18;--panel:#1B2620;--ink:#EAEFE8;--sub:#AEBBAF;--accent:#7FC49B;--accent2:#E39466;--line:#2D3A33;--chip:#22302A;}
+}
+:root[data-theme="dark"]{--bg:#141C18;--panel:#1B2620;--ink:#EAEFE8;--sub:#AEBBAF;--accent:#7FC49B;--accent2:#E39466;--line:#2D3A33;--chip:#22302A;}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;margin:0}
+h1,h2,h3,.serif{font-family:'Spectral',serif}
+.mono{font-family:'IBM Plex Mono',monospace}
+.wrap{max-width:760px;margin:0 auto;padding:2.2rem 1.3rem 5rem}
+h2{font-size:1.5rem;font-weight:600;margin:0 0 .3rem;color:var(--ink)}
+h3{font-size:1.05rem;font-weight:600;margin:1.1rem 0 .4rem;color:var(--accent)}
+p{line-height:1.7;color:var(--ink);margin:.6rem 0}
+.sub{color:var(--sub);font-size:.95rem}
+section{margin-top:2.6rem;padding-top:2.2rem;border-top:1px solid var(--line)}
+section:first-of-type{border-top:none;margin-top:1.5rem;padding-top:0}
+.rule-icon{width:26px;height:26px;display:inline-block;vertical-align:middle;margin-right:.5rem;color:var(--accent)}
+ul,ol{padding-left:1.3rem;line-height:1.75}
+li{margin:.25rem 0}
+.formula{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;margin:.8rem 0;font-size:1.05rem;text-align:center;overflow-x:auto}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .18em;line-height:1.15}
+.frac .num{border-bottom:1.4px solid currentColor;padding:0 .15em}
+.frac .den{padding:0 .15em}
+.frac.small{font-size:.68em}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;margin:.9rem 0}
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.8rem}
+.tab{border:1px solid var(--line);background:var(--chip);color:var(--sub);padding:.4rem .8rem;border-radius:8px;font-size:.85rem;cursor:pointer}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.slider-row{display:flex;align-items:center;gap:.8rem;margin:.5rem 0}
+input[type=range]{flex:1;accent-color:var(--accent)}
+.readout{font-family:'IBM Plex Mono',monospace;background:var(--chip);border-radius:8px;padding:.15rem .6rem;font-size:.85rem;min-width:3.2em;text-align:center}
+.box{position:relative;height:140px;background:var(--chip);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:.7rem 0}
+.dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.explain{font-size:.9rem;color:var(--sub);margin-top:.5rem}
+.qcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem;margin:1rem 0}
+.qopt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--chip);color:var(--ink);padding:.55rem .8rem;border-radius:8px;margin:.4rem 0;cursor:pointer;font-size:.92rem;line-height:1.5}
+.qopt.correct{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 18%,var(--chip))}
+.qopt.wrong{border-color:var(--accent2);background:color-mix(in srgb,var(--accent2) 18%,var(--chip))}
+.qexp{display:none;margin-top:.7rem;padding:.8rem;background:var(--chip);border-radius:8px;font-size:.9rem;line-height:1.6}
+.btn{border:1px solid var(--accent);color:var(--accent);background:transparent;padding:.4rem .9rem;border-radius:8px;font-size:.85rem;cursor:pointer;margin-top:.3rem}
+.pill{display:inline-block;font-size:.72rem;color:var(--accent);background:var(--chip);border-radius:6px;padding:.1rem .5rem;margin-bottom:.3rem}
+.qcheck{display:flex;align-items:flex-start;gap:.6rem;border:1px solid var(--line);background:var(--chip);color:var(--ink);padding:.55rem .8rem;border-radius:8px;margin:.4rem 0;cursor:pointer;font-size:.92rem;line-height:1.5}
+.qcheck input{margin-top:.3rem;accent-color:var(--accent)}
+.qcheck.correct{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 18%,var(--chip))}
+.qcheck.missed{border-color:var(--accent2);background:color-mix(in srgb,var(--accent2) 12%,var(--chip))}
+.app-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.9rem;margin:.8rem 0}
+.app-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1rem}
+.app-card svg{width:42px;height:42px;color:var(--accent);margin-bottom:.5rem}
+.app-card h4{margin:0 0 .3rem;font-size:.95rem;color:var(--ink)}
+.app-card p{margin:0;font-size:.85rem;color:var(--sub);line-height:1.55}
+.stimulus{background:var(--chip);border-left:3px solid var(--accent);border-radius:8px;padding:1rem 1.1rem;margin:.8rem 0;font-size:.95rem;line-height:1.7}
+svg text{font-family:'IBM Plex Sans',sans-serif}
+header{max-width:760px;margin:0 auto;padding:2.4rem 1.3rem .5rem}
+.eyebrow{color:var(--accent2);font-size:.85rem}
+</style>
+</head>
+<body>
+<header>
+  <p class="eyebrow serif" style="font-style:italic">Kimia — Kinetika Reaksi</p>
+  <h1 class="serif" style="font-size:2.3rem;margin:.2rem 0">Laju Reaksi</h1>
+  <p class="sub">Bahan bacaan lengkap: konsep dasar, teori tumbukan, faktor-faktor yang memengaruhi laju reaksi, penerapannya dalam kehidupan sehari-hari, dilengkapi simulasi interaktif dan latihan pemahaman berbasis masalah.</p>
+</header>
+
+<div class="wrap">
+
+<section>
+<h2>1. Pengertian Laju Reaksi</h2>
+<p>Laju reaksi adalah <b>perubahan konsentrasi pereaksi (reaktan) atau produk per satuan waktu</b>. Karena reaktan berkurang dan produk bertambah selama reaksi berlangsung, laju reaksi dapat dinyatakan dari salah satu zat yang paling mudah diukur perubahannya.</p>
+<div class="formula">
+v = <span class="frac"><span class="num">−Δ[R]</span><span class="den">Δt</span></span> = <span class="frac"><span class="num">Δ[P]</span><span class="den">Δt</span></span>
+</div>
+<p class="explain" style="margin-top:-.3rem">v = laju reaksi (M/s); [R] = konsentrasi reaktan (mol/L); [P] = konsentrasi produk; Δt = selang waktu (s). Tanda negatif pada reaktan menunjukkan konsentrasinya berkurang, sedangkan laju reaksi selalu bernilai positif.</p>
+<h3>Persamaan Laju & Orde Reaksi</h3>
+<p>Untuk reaksi umum aA + bB → cC + dD, laju reaksi secara empiris dinyatakan dengan <b>hukum laju</b>:</p>
+<div class="formula">v = k [A]<sup>m</sup> [B]<sup>n</sup></div>
+<p class="explain" style="margin-top:-.3rem">k = tetapan/konstanta laju reaksi; m dan n = orde reaksi terhadap A dan B (ditentukan dari data eksperimen, <b>bukan</b> dari koefisien reaksi); m + n = orde reaksi total.</p>
+<ul>
+<li><b>Orde nol</b>: laju tidak dipengaruhi konsentrasi zat tersebut.</li>
+<li><b>Orde satu</b>: laju berbanding lurus dengan konsentrasi ([A]).</li>
+<li><b>Orde dua</b>: laju berbanding lurus dengan kuadrat konsentrasi ([A]²).</li>
+</ul>
+
+<h3>Laju Rata-Rata vs Laju Sesaat</h3>
+<p>Konsentrasi reaktan tidak berkurang secara konstan — di awal reaksi konsentrasinya masih tinggi sehingga tumbukan sering terjadi dan reaksi berlangsung cepat; semakin lama konsentrasi menipis sehingga laju melambat. Karena itu dikenal dua jenis laju:</p>
+<ul>
+<li><b>Laju rata-rata</b>: perubahan konsentrasi dibagi selang waktu tertentu (garis lurus/secant pada grafik).</li>
+<li><b>Laju sesaat</b>: laju pada satu titik waktu tertentu, secara matematis merupakan kemiringan garis singgung (tangen) kurva [A] terhadap t pada titik itu.</li>
+</ul>
+<svg viewBox="0 0 340 170" style="width:100%;max-width:340px;display:block;margin:.6rem auto">
+  <line x1="30" y1="20" x2="30" y2="150" stroke="var(--sub)" stroke-width="1"/>
+  <line x1="30" y1="150" x2="320" y2="150" stroke="var(--sub)" stroke-width="1"/>
+  <text x="4" y="25" font-size="10" fill="var(--sub)">[A]</text>
+  <text x="300" y="164" font-size="10" fill="var(--sub)">t</text>
+  <path d="M35,30 C90,55 140,90 320,140" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+  <circle cx="100" cy="66" r="3.5" fill="var(--accent2)"/>
+  <circle cx="220" cy="112" r="3.5" fill="var(--accent2)"/>
+  <line x1="100" y1="66" x2="220" y2="112" stroke="var(--accent2)" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="150" y="100" font-size="9" fill="var(--accent2)">laju rata-rata</text>
+  <line x1="60" y1="88" x2="180" y2="52" stroke="var(--ink)" stroke-width="1.5"/>
+  <text x="185" y="52" font-size="9" fill="var(--ink)">laju sesaat</text>
+</svg>
+
+<h3>Contoh: Menentukan Orde Reaksi dari Data Percobaan</h3>
+<p>Untuk reaksi A + B → produk, diperoleh data berikut pada suhu tetap:</p>
+<table class="mono" style="width:100%;border-collapse:collapse;font-size:.85rem;margin:.6rem 0">
+<tr style="border-bottom:1px solid var(--line)"><td>Percobaan</td><td>[A] M</td><td>[B] M</td><td>v (M/s)</td></tr>
+<tr style="border-bottom:1px solid var(--line)"><td>1</td><td>0,10</td><td>0,10</td><td>0,20</td></tr>
+<tr style="border-bottom:1px solid var(--line)"><td>2</td><td>0,20</td><td>0,10</td><td>0,40</td></tr>
+<tr><td>3</td><td>0,10</td><td>0,20</td><td>0,80</td></tr>
+</table>
+<p><b>Orde terhadap A</b> — bandingkan percobaan 1 dan 2 karena [B] tetap:</p>
+<div class="formula"><span class="frac"><span class="num">v₂</span><span class="den">v₁</span></span> = <span class="frac"><span class="num">0,40</span><span class="den">0,20</span></span> = 2 &nbsp;&nbsp;dan&nbsp;&nbsp; <span class="frac"><span class="num">[A]₂</span><span class="den">[A]₁</span></span><sup>m</sup> = 2<sup>m</sup> &nbsp;⟹&nbsp; 2 = 2<sup>m</sup> ⟹ <b>m = 1</b></div>
+<p><b>Orde terhadap B</b> — bandingkan percobaan 1 dan 3 karena [A] tetap:</p>
+<div class="formula"><span class="frac"><span class="num">v₃</span><span class="den">v₁</span></span> = <span class="frac"><span class="num">0,80</span><span class="den">0,20</span></span> = 4 &nbsp;&nbsp;dan&nbsp;&nbsp; 2<sup>n</sup> = 4 ⟹ <b>n = 2</b></div>
+<p>Sehingga hukum laju: <b>v = k[A][B]²</b>, dengan orde total = 1 + 2 = <b>3</b>. Nilai k dihitung dengan mensubstitusi salah satu data, misal percobaan 1:</p>
+<div class="formula">k = <span class="frac"><span class="num">v</span><span class="den">[A][B]²</span></span> = <span class="frac"><span class="num">0,20</span><span class="den">(0,10)(0,10)²</span></span> = 200 M<sup>−2</sup>s<sup>−1</sup></div>
+<p class="explain" style="margin-top:-.2rem">Satuan k selalu bergantung pada orde total reaksi — semakin tinggi orde total, semakin kompleks satuan k.</p>
+</section>
+
+<section>
+<h2>2. Teori Tumbukan (Collision Theory)</h2>
+<p>Reaksi kimia terjadi karena partikel-partikel pereaksi saling bertumbukan. Namun, tidak semua tumbukan menghasilkan reaksi. Agar reaksi berlangsung, tumbukan harus memenuhi <b>dua syarat</b>:</p>
+<ol>
+<li><b>Orientasi (arah) tumbukan yang tepat</b> — bagian molekul yang aktif harus saling bertemu.</li>
+<li><b>Energi kinetik ≥ energi aktivasi (Ea)</b> — energi minimum yang diperlukan agar tumbukan menghasilkan reaksi.</li>
+</ol>
+<p>Tumbukan yang memenuhi kedua syarat disebut <b>tumbukan efektif</b>, yaitu satu-satunya jenis tumbukan yang menghasilkan zat produk.</p>
+
+<div class="panel">
+<span class="pill">Simulasi</span>
+<p style="margin-top:0">Partikel bergerak bebas di dalam kotak dan saling bertumbukan. Atur energi kinetik dan jenis orientasi, lalu amati berapa banyak tumbukan yang benar-benar <b>efektif</b> (berubah warna hijau) dibanding yang gagal (memantul biasa).</p>
+<div class="slider-row"><label style="width:9rem;font-size:.85rem">Energi kinetik</label><input id="ekSlider" type="range" min="0" max="100" value="50" oninput="onEkChange()"><span class="readout" id="ekVal">50%</span></div>
+<div class="tabs">
+  <button class="tab active" id="oriTepat" onclick="setOri(true)">Orientasi selalu tepat</button>
+  <button class="tab" id="oriAcak" onclick="setOri(false)">Orientasi acak (realistis)</button>
+</div>
+<canvas id="tumbukanCanvas" width="640" height="180" style="width:100%;height:180px;background:var(--chip);border:1px solid var(--line);border-radius:10px;display:block"></canvas>
+<div style="display:flex;gap:.8rem;margin-top:.6rem;flex-wrap:wrap;align-items:center">
+  <span class="readout mono">Total tumbukan: <b id="totCount">0</b></span>
+  <span class="readout mono" style="color:var(--accent)">Efektif: <b id="effCount">0</b></span>
+  <button class="btn" onclick="resetCounts()">Reset hitungan</button>
+</div>
+<p class="explain" id="tumbukanExp"></p>
+</div>
+</section>
+
+<section>
+<h2>3. Faktor-Faktor yang Memengaruhi Laju Reaksi</h2>
+<p>Berdasarkan teori tumbukan, laju reaksi dipengaruhi oleh segala hal yang mengubah <b>frekuensi tumbukan</b> atau <b>proporsi tumbukan efektif</b>.</p>
+
+<h3>a. Konsentrasi &amp; Suhu</h3>
+<p>Semakin besar konsentrasi, semakin rapat partikel sehingga peluang tumbukan makin sering. Semakin tinggi suhu, partikel bergerak lebih cepat (energi kinetik naik) sehingga tumbukan lebih sering <i>dan</i> lebih banyak yang melampaui energi aktivasi.</p>
+<div class="panel">
+<span class="pill">Simulasi</span>
+<div class="slider-row"><label style="width:9rem;font-size:.85rem">Konsentrasi</label><input id="konSlider" type="range" min="1" max="5" value="2" oninput="updateFS()"><span class="readout" id="konVal">2 M</span></div>
+<div class="slider-row"><label style="width:9rem;font-size:.85rem">Suhu</label><input id="suhuSlider" type="range" min="20" max="80" step="10" value="30" oninput="updateFS()"><span class="readout" id="suhuVal">30°C</span></div>
+<div class="box" id="fsBox"></div>
+<p class="explain">Frekuensi tumbukan relatif: <span class="mono" id="fsRate">-</span></p>
+</div>
+<p class="explain">Perlu diluruskan: pengaruh suhu bukan sekadar karena partikel "bergerak lebih cepat". Kenaikan suhu meningkatkan <b>energi kinetik rata-rata</b> partikel, sehingga <b>fraksi partikel yang energinya ≥ energi aktivasi (Ea)</b> menjadi lebih besar — akibatnya jumlah tumbukan efektif meningkat dan laju reaksi meningkat.</p>
+<p class="explain">Hubungan kuantitatif antara suhu dan konstanta laju dinyatakan oleh <b>persamaan Arrhenius</b>:</p>
+<div class="formula" style="margin:.5rem 0">k = A e<sup>−<span class="frac small"><span class="num">Ea</span><span class="den">RT</span></span></sup></div>
+<p class="explain" style="margin-top:-.2rem">k = konstanta laju; A = faktor frekuensi; Ea = energi aktivasi; R = konstanta gas; T = suhu mutlak (K). Semakin tinggi T, semakin besar nilai k, karena suku eksponen mendekati nol sehingga fraksi partikel berenergi cukup semakin besar.</p>
+
+<h3>b. Luas Permukaan Bidang Sentuh</h3>
+<p>Untuk pereaksi padat, memperkecil ukuran partikel (misal serbuk vs bongkahan) memperbesar luas permukaan yang bersentuhan dengan pereaksi lain, sehingga tumbukan lebih sering terjadi dan reaksi berlangsung lebih cepat.</p>
+<div class="panel">
+<span class="pill">Simulasi</span>
+<div class="tabs">
+  <button class="tab active" id="bongkah" onclick="setLuas(false)">Bongkahan (1 keping)</button>
+  <button class="tab" id="serbuk" onclick="setLuas(true)">Serbuk (dihaluskan)</button>
+</div>
+<div id="luasBox" class="box" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:2px;padding:8px"></div>
+<p class="explain" id="luasExp"></p>
+</div>
+
+<h3>c. Katalis</h3>
+<p>Katalis adalah zat yang mempercepat reaksi dengan menyediakan <b>jalur reaksi alternatif berenergi aktivasi lebih rendah</b>, tanpa ikut bereaksi secara permanen (katalis tidak habis di akhir reaksi).</p>
+<div class="panel">
+<span class="pill">Simulasi</span>
+<div class="tabs">
+  <button class="tab active" id="tanpaKat" onclick="setKat(false)">Tanpa katalis</button>
+  <button class="tab" id="pakaiKat" onclick="setKat(true)">Dengan katalis</button>
+</div>
+<svg viewBox="0 0 320 140" style="width:100%;height:140px">
+  <line x1="20" y1="120" x2="300" y2="120" stroke="var(--line)" stroke-width="1"/>
+  <path id="curveNoKat" d="M20,100 C90,100 110,20 160,20 C210,20 230,70 300,70" fill="none" stroke="var(--accent2)" stroke-width="2.5"/>
+  <path id="curveKat" d="M20,100 C90,100 110,60 160,60 C210,60 230,70 300,70" fill="none" stroke="var(--accent)" stroke-width="2.5" style="display:none"/>
+  <text x="20" y="112" font-size="9" fill="var(--sub)">Reaktan</text>
+  <text x="255" y="65" font-size="9" fill="var(--sub)">Produk</text>
+  <text id="eaLabel" x="150" y="14" font-size="9" fill="var(--ink)" text-anchor="middle">Ea tinggi</text>
+</svg>
+<p class="explain" id="katExp"></p>
+</div>
+</section>
+
+<section>
+<h2>4. Aplikasi Laju Reaksi dalam Kehidupan Sehari-hari</h2>
+<p>Konsep laju reaksi bukan hanya teori di kelas — prinsip yang sama dipakai untuk mengawetkan makanan, memasak, hingga mengurangi polusi kendaraan. Perhatikan faktor apa yang berperan pada tiap contoh berikut.</p>
+<div class="app-grid">
+
+<div class="app-card">
+<svg viewBox="0 0 64 64"><path d="M32 6 L32 58 M12 16 L52 48 M52 16 L12 48" stroke="currentColor" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="32" cy="32" r="6" fill="currentColor"/></svg>
+<h4>Lemari Es &amp; Pengawetan Makanan</h4>
+<p>Suhu rendah memperlambat reaksi pembusukan yang dipicu enzim dan mikroorganisme, sehingga makanan bertahan lebih lama. <b>Faktor: suhu.</b></p>
+</div>
+
+<div class="app-card">
+<svg viewBox="0 0 64 64"><path d="M20 54 C20 34 28 26 24 10 C36 18 44 30 40 44 C48 40 50 30 48 22 C56 32 56 48 44 56 C32 62 22 60 20 54Z" fill="currentColor"/></svg>
+<h4>Kembang Api &amp; Serbuk Logam</h4>
+<p>Serbuk logam (misal aluminium/magnesium) dibakar jauh lebih cepat dan meletup-letup dibanding bongkahan logam, karena luas permukaannya jauh lebih besar. <b>Faktor: luas permukaan.</b></p>
+</div>
+
+<div class="app-card">
+<svg viewBox="0 0 64 64"><path d="M10 34 a22 14 0 0 1 44 0 v6 a22 14 0 0 1 -44 0 Z" fill="currentColor"/><path d="M22 18 q4 -10 0 -16 M32 18 q4 -10 0 -16 M42 18 q4 -10 0 -16" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+<h4>Panci Presto</h4>
+<p>Tekanan tinggi menaikkan titik didih air sehingga suhu di dalam panci melebihi 100°C, mempercepat reaksi pemasakan makanan. <b>Faktor: suhu.</b></p>
+</div>
+
+<div class="app-card">
+<svg viewBox="0 0 64 64"><ellipse cx="32" cy="46" rx="22" ry="10" fill="currentColor" opacity=".25"/><circle cx="22" cy="40" r="5" fill="currentColor"/><circle cx="34" cy="34" r="6" fill="currentColor"/><circle cx="45" cy="42" r="4.5" fill="currentColor"/></svg>
+<h4>Fermentasi Tape &amp; Tempe</h4>
+<p>Ragi/kapang menghasilkan enzim yang berfungsi sebagai katalis biologis, mempercepat pengubahan pati/protein tanpa enzim itu sendiri ikut habis bereaksi. <b>Faktor: katalis.</b></p>
+</div>
+
+<div class="app-card">
+<svg viewBox="0 0 64 64"><rect x="26" y="8" width="12" height="40" rx="3" fill="currentColor"/><path d="M20 50 q12 14 24 0" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="32" cy="54" r="4" fill="currentColor"/></svg>
+<h4>Perkaratan Besi (Korosi)</h4>
+<p>Besi berkarat lebih cepat di lingkungan lembap dan bergaram karena konsentrasi oksigen serta ion terlarut yang bersentuhan dengan permukaan logam meningkat. <b>Faktor: konsentrasi.</b></p>
+</div>
+
+<div class="app-card">
+<svg viewBox="0 0 64 64"><rect x="8" y="24" width="40" height="18" rx="4" fill="currentColor"/><circle cx="18" cy="46" r="5" fill="currentColor"/><circle cx="40" cy="46" r="5" fill="currentColor"/><path d="M48 30 h10 M52 24 v12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+<h4>Konverter Katalitik Kendaraan</h4>
+<p>Logam Pt, Pd, dan Rh dalam knalpot bekerja sebagai katalis heterogen yang mempercepat pengubahan gas CO dan NOₓ menjadi gas yang lebih aman sebelum dilepas ke udara. <b>Faktor: katalis.</b></p>
+</div>
+
+</div>
+</section>
+
+<section>
+<h2>5. Latihan Pemahaman (Berbasis Masalah)</h2>
+<p class="sub">Bacalah stimulus berikut, lalu jawab kelima soal di bawahnya. Setiap soal berupa pilihan ganda kompleks: centang <b>semua pernyataan yang benar</b>, lalu klik "Periksa Jawaban" untuk melihat pembahasan.</p>
+
+<div class="stimulus">
+<b>Stimulus:</b> Sebuah industri rumahan memproduksi kapur tulis dari batu kapur (CaCO₃) dan perlu menguji kemurniannya dengan mereaksikannya bersama larutan asam klorida (HCl) sesuai persamaan:
+<div class="formula" style="margin:.5rem 0">CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g)</div>
+Laju reaksi diukur dari volume gas CO₂ yang terbentuk per satuan waktu. Untuk mempercepat proses pengujian tanpa mengubah jumlah bahan, teknisi laboratorium melakukan serangkaian variasi berikut, dan mencatat data laju reaksi terhadap konsentrasi HCl (dengan [CaCO₃] berupa padatan berlebih dan ukuran tetap):
+<table class="mono" style="width:100%;border-collapse:collapse;font-size:.85rem;margin:.6rem 0">
+<tr style="border-bottom:1px solid var(--line)"><td>Percobaan</td><td>[HCl] M</td><td>Suhu</td><td>Bentuk CaCO₃</td><td>v (mL CO₂/s)</td></tr>
+<tr style="border-bottom:1px solid var(--line)"><td>1</td><td>1,0</td><td>27°C</td><td>Bongkahan</td><td>2,0</td></tr>
+<tr style="border-bottom:1px solid var(--line)"><td>2</td><td>2,0</td><td>27°C</td><td>Bongkahan</td><td>8,0</td></tr>
+<tr><td>3</td><td>1,0</td><td>27°C</td><td>Serbuk</td><td>6,0</td></tr>
+</table>
+</div>
+
+<div class="qcard" data-q="1">
+<p><b>Soal 1 — Teori Tumbukan.</b> Berdasarkan stimulus di atas, pernyataan yang benar mengenai dasar teori tumbukan pada reaksi tersebut adalah:</p>
+<label class="qcheck"><input type="checkbox" data-correct="true">Tidak semua tumbukan antara partikel HCl dan permukaan CaCO₃ menghasilkan gas CO₂.</label>
+<label class="qcheck"><input type="checkbox" data-correct="true">Tumbukan yang menghasilkan reaksi harus memiliki energi ≥ energi aktivasi dan orientasi yang sesuai.</label>
+<label class="qcheck"><input type="checkbox" data-correct="false">Semua tumbukan pada suhu 27°C pasti menghasilkan gas CO₂.</label>
+<label class="qcheck"><input type="checkbox" data-correct="true">Tumbukan yang memenuhi kedua syarat di atas disebut tumbukan efektif.</label>
+<button class="btn" onclick="checkMulti(this)">Periksa Jawaban</button>
+<div class="qexp">Tidak semua tumbukan menghasilkan reaksi — hanya tumbukan yang energinya mencapai Ea dan orientasinya tepat (tumbukan efektif) yang menghasilkan gas CO₂. Pernyataan bahwa "semua tumbukan pasti menghasilkan produk" keliru karena mengabaikan syarat energi dan orientasi. Jawaban benar: pernyataan 1, 2, dan 4.</div>
+</div>
+
+<div class="qcard" data-q="2">
+<p><b>Soal 2 — Konsentrasi.</b> Bandingkan Percobaan 1 dan 2 (bentuk CaCO₃ sama, hanya [HCl] yang berbeda). Pernyataan yang benar adalah:</p>
+<label class="qcheck"><input type="checkbox" data-correct="true">Menaikkan [HCl] dari 1,0 M menjadi 2,0 M memperbesar frekuensi tumbukan antara ion H⁺ dan permukaan CaCO₃.</label>
+<label class="qcheck"><input type="checkbox" data-correct="true">Laju reaksi pada Percobaan 2 empat kali lebih besar daripada Percobaan 1 (8,0 berbanding 2,0).</label>
+<label class="qcheck"><input type="checkbox" data-correct="false">Kenaikan laju tersebut membuktikan reaksi berorde nol terhadap HCl.</label>
+<label class="qcheck"><input type="checkbox" data-correct="false">Konsentrasi HCl tidak berpengaruh selama CaCO₃ berlebih.</label>
+<button class="btn" onclick="checkMulti(this)">Periksa Jawaban</button>
+<div class="qexp">Menaikkan konsentrasi HCl memperbanyak partikel H⁺ dalam volume yang sama sehingga peluang tumbukan dengan permukaan CaCO₃ meningkat. Secara data, v naik dari 2,0 menjadi 8,0 mL/s (4×) ketika [HCl] naik 2×, artinya reaksi berorde <b>dua</b> terhadap HCl (2² = 4), bukan orde nol. CaCO₃ berlebih hanya berarti jumlahnya tidak habis, bukan berarti konsentrasi HCl tidak berpengaruh. Jawaban benar: pernyataan 1 dan 2.</div>
+</div>
+
+<div class="qcard" data-q="3">
+<p><b>Soal 3 — Luas Permukaan.</b> Bandingkan Percobaan 1 dan 3 ([HCl] dan suhu sama, hanya bentuk CaCO₃ yang berbeda). Pernyataan yang benar adalah:</p>
+<label class="qcheck"><input type="checkbox" data-correct="true">CaCO₃ berbentuk serbuk memiliki luas permukaan total yang lebih besar daripada bongkahan bermassa sama.</label>
+<label class="qcheck"><input type="checkbox" data-correct="true">Luas permukaan yang lebih besar memperbanyak titik kontak antara HCl dan CaCO₃, sehingga tumbukan lebih sering terjadi.</label>
+<label class="qcheck"><input type="checkbox" data-correct="false">Perbedaan laju antara Percobaan 1 dan 3 terjadi karena serbuk memiliki energi aktivasi yang lebih rendah.</label>
+<label class="qcheck"><input type="checkbox" data-correct="false">Bentuk padatan tidak pernah memengaruhi laju reaksi, hanya konsentrasi larutan yang berpengaruh.</label>
+<button class="btn" onclick="checkMulti(this)">Periksa Jawaban</button>
+<div class="qexp">Serbuk memiliki luas permukaan total lebih besar daripada bongkahan bermassa sama, sehingga lebih banyak bagian CaCO₃ yang bersentuhan langsung dengan larutan HCl dan tumbukan lebih sering terjadi (v naik dari 2,0 menjadi 6,0 mL/s). Perlu diluruskan: memperkecil ukuran partikel <b>tidak mengubah energi aktivasi</b> — pengaruhnya murni pada peningkatan luas kontak, bukan pada penurunan penghalang energi seperti katalis. Jawaban benar: pernyataan 1 dan 2.</div>
+</div>
+
+<div class="qcard" data-q="4">
+<p><b>Soal 4 — Suhu.</b> Jika Percobaan 1 diulang pada suhu 47°C (naik 20°C dari 27°C), dengan [HCl] dan bentuk CaCO₃ tetap sama seperti Percobaan 1, pernyataan yang benar adalah:</p>
+<label class="qcheck"><input type="checkbox" data-correct="true">Energi kinetik rata-rata partikel pereaksi pada 47°C lebih besar daripada pada 27°C.</label>
+<label class="qcheck"><input type="checkbox" data-correct="true">Fraksi partikel yang energinya ≥ Ea pada 47°C lebih besar, sehingga laju reaksi meningkat dibanding 27°C.</label>
+<label class="qcheck"><input type="checkbox" data-correct="false">Kenaikan suhu tersebut menurunkan energi aktivasi (Ea) reaksi CaCO₃ dengan HCl.</label>
+<label class="qcheck"><input type="checkbox" data-correct="true">Menurut persamaan Arrhenius k = A·e^(−Ea/RT), nilai k pada 47°C lebih besar daripada pada 27°C.</label>
+<button class="btn" onclick="checkMulti(this)">Periksa Jawaban</button>
+<div class="qexp">Kenaikan suhu meningkatkan energi kinetik rata-rata partikel, sehingga fraksi partikel dengan energi ≥ Ea membesar dan laju reaksi meningkat. Ea adalah sifat reaksi itu sendiri (nilai energi minimum menuju keadaan transisi) dan <b>tidak berubah</b> hanya karena suhu berubah — yang berubah adalah proporsi partikel yang mampu mencapainya. Sesuai persamaan Arrhenius, T yang lebih tinggi membuat suku −Ea/RT mendekati nol sehingga k membesar. Jawaban benar: pernyataan 1, 2, dan 4.</div>
+</div>
+
+<div class="qcard" data-q="5">
+<p><b>Soal 5 — Katalis &amp; Kesimpulan Umum.</b> Teknisi kemudian mencoba menambahkan sedikit larutan CuCl₂ ke dalam campuran Percobaan 1 dan mendapati laju reaksi meningkat tanpa CuCl₂ berkurang jumlahnya di akhir reaksi. Pernyataan yang benar adalah:</p>
+<label class="qcheck"><input type="checkbox" data-correct="true">CuCl₂ pada kasus ini berperan sebagai katalis karena mempercepat reaksi tanpa ikut habis bereaksi.</label>
+<label class="qcheck"><input type="checkbox" data-correct="true">Katalis bekerja dengan menyediakan jalur reaksi alternatif berenergi aktivasi lebih rendah.</label>
+<label class="qcheck"><input type="checkbox" data-correct="false">Penambahan katalis mengubah ΔH reaksi antara CaCO₃ dan HCl.</label>
+<label class="qcheck"><input type="checkbox" data-correct="true">Dari seluruh percobaan, laju reaksi CaCO₃ + HCl dipengaruhi oleh konsentrasi, luas permukaan, suhu, dan katalis secara bersamaan.</label>
+<button class="btn" onclick="checkMulti(this)">Periksa Jawaban</button>
+<div class="qexp">Karena CuCl₂ mempercepat reaksi namun tidak berkurang jumlahnya di akhir reaksi, zat ini berfungsi sebagai katalis — bekerja dengan menyediakan jalur reaksi alternatif yang energi aktivasinya lebih rendah. Katalis tidak mengubah ΔH reaksi (selisih energi reaktan dan produk tetap sama). Menyimpulkan seluruh rangkaian percobaan: laju reaksi CaCO₃ + HCl memang dipengaruhi banyak faktor sekaligus — konsentrasi (Soal 2), luas permukaan (Soal 3), suhu (Soal 4), dan katalis (Soal 5). Jawaban benar: pernyataan 1, 2, dan 4.</div>
+</div>
+
+</section>
+
+</div>
+
+<script>
+function checkMulti(btn){
+  const card = btn.closest('.qcard');
+  card.querySelectorAll('.qcheck').forEach(label=>{
+    const inp = label.querySelector('input');
+    inp.disabled = true;
+    const isCorrect = inp.dataset.correct==='true';
+    if(isCorrect && inp.checked) label.classList.add('correct');
+    else if(isCorrect && !inp.checked) label.classList.add('missed');
+    else if(!isCorrect && inp.checked) label.classList.add('missed');
+  });
+  btn.style.display='none';
+  card.querySelector('.qexp').style.display='block';
+}
+
+// --- Teori tumbukan: simulasi partikel bertumbukan (canvas) ---
+const tcv = document.getElementById('tumbukanCanvas');
+const tctx = tcv.getContext('2d');
+let ek = 50, oriTepat = true, totC = 0, effC = 0;
+const N_PART = 14, R_PART = 7;
+let parts = Array.from({length:N_PART},()=>({
+  x: 20+Math.random()*(tcv.width-40), y: 20+Math.random()*(tcv.height-40),
+  dx: (Math.random()-0.5), dy:(Math.random()-0.5), flash:0, eff:false, cool:0
+}));
+function speedNow(){ return 0.5 + ek/100*2.5; }
+function onEkChange(){ ek=+document.getElementById('ekSlider').value; document.getElementById('ekVal').textContent=ek+'%'; updateExplainTumbukan(); }
+function setOri(v){ oriTepat=v; document.getElementById('oriTepat').classList.toggle('active',v); document.getElementById('oriAcak').classList.toggle('active',!v); updateExplainTumbukan(); }
+function resetCounts(){ totC=0; effC=0; document.getElementById('totCount').textContent=0; document.getElementById('effCount').textContent=0; }
+function updateExplainTumbukan(){
+  const exp = document.getElementById('tumbukanExp');
+  const oriTxt = oriTepat? 'orientasi selalu dianggap tepat' : 'orientasi bersifat acak seperti kondisi nyata';
+  if(ek<55) exp.textContent = `Energi kinetik masih di bawah ambang Ea, sehingga sebagian besar tumbukan (${oriTxt}) gagal menghasilkan reaksi — perhatikan jumlah "Efektif" bertambah lambat.`;
+  else exp.textContent = `Energi kinetik sudah melampaui Ea. Dengan ${oriTxt}, perhatikan seberapa banyak tumbukan hijau (efektif) muncul dibanding total tumbukan.`;
+}
+function stepTumbukan(){
+  const speed = speedNow();
+  const W=tcv.width, H=tcv.height;
+  parts.forEach(p=>{
+    p.x += p.dx*speed; p.y += p.dy*speed;
+    if(p.x<R_PART||p.x>W-R_PART) p.dx*=-1;
+    if(p.y<R_PART||p.y>H-R_PART) p.dy*=-1;
+    p.x=Math.max(R_PART,Math.min(W-R_PART,p.x)); p.y=Math.max(R_PART,Math.min(H-R_PART,p.y));
+    if(p.flash>0) p.flash--;
+    if(p.cool>0) p.cool--;
+  });
+  for(let i=0;i<N_PART;i++)for(let j=i+1;j<N_PART;j++){
+    const a=parts[i],b=parts[j];
+    const dist=Math.hypot(a.x-b.x,a.y-b.y);
+    if(dist<R_PART*2 && a.cool===0 && b.cool===0){
+      const dx=b.x-a.x, dy=b.y-a.y, tmp=a.dx; a.dx=b.dx; b.dx=tmp; const tmp2=a.dy; a.dy=b.dy; b.dy=tmp2;
+      const energyOK = ek>=55;
+      const oriOK = oriTepat || Math.random()<0.35;
+      const efektif = energyOK && oriOK;
+      totC++; document.getElementById('totCount').textContent=totC;
+      if(efektif){ effC++; document.getElementById('effCount').textContent=effC; }
+      a.flash=b.flash=18; a.eff=b.eff=efektif; a.cool=b.cool=30;
+    }
+  }
+  tctx.clearRect(0,0,W,H);
+  parts.forEach(p=>{
+    tctx.beginPath(); tctx.arc(p.x,p.y,R_PART,0,7);
+    tctx.fillStyle = p.flash>0 ? (p.eff? '#3C6E52' : '#B4592A') : '#7FAE93';
+    tctx.fill();
+  });
+  requestAnimationFrame(stepTumbukan);
+}
+updateExplainTumbukan();
+requestAnimationFrame(stepTumbukan);
+
+// --- Konsentrasi & suhu sim ---
+function updateFS(){
+  const kon = +document.getElementById('konSlider').value;
+  const suhu = +document.getElementById('suhuSlider').value;
+  document.getElementById('konVal').textContent = kon+' M';
+  document.getElementById('suhuVal').textContent = suhu+'°C';
+  const box = document.getElementById('fsBox'); box.innerHTML='';
+  const n = kon*4;
+  const speed = 0.6 + (suhu-20)/60*1.8;
+  for(let i=0;i<n;i++){
+    const d=document.createElement('div'); d.className='dot';
+    d.style.left=Math.random()*90+'%'; d.style.top=Math.random()*85+'%';
+    d.style.animation = `move ${(1.4/speed).toFixed(2)}s linear infinite alternate`;
+    d.style.animationDelay=(Math.random()*1)+'s';
+    box.appendChild(d);
+  }
+  // fraksi partikel berenergi ≥ Ea meningkat seiring suhu (bentuk sigmoid, konseptual dari distribusi energi kinetik)
+  const fraksiEnergiCukup = 1/(1+Math.exp(-(suhu-50)/12));
+  const rel = (kon * fraksiEnergiCukup * 5).toFixed(1);
+  document.getElementById('fsRate').textContent = rel+'×  (relatif terhadap 1 M, energi minimum)';
+}
+const styleSheet=document.createElement('style');
+styleSheet.textContent='@keyframes move{from{transform:translate(0,0)}to{transform:translate(20px,14px)}}';
+document.head.appendChild(styleSheet);
+updateFS();
+
+// --- Luas permukaan sim ---
+function setLuas(serbuk){
+  document.getElementById('bongkah').classList.toggle('active',!serbuk);
+  document.getElementById('serbuk').classList.toggle('active',serbuk);
+  const box=document.getElementById('luasBox'); box.innerHTML='';
+  const exp=document.getElementById('luasExp');
+  if(!serbuk){
+    const d=document.createElement('div'); d.style.width='90px'; d.style.height='90px'; d.style.background='var(--accent)'; d.style.borderRadius='6px'; box.appendChild(d);
+    exp.textContent='1 keping bongkahan: luas permukaan sentuh kecil, hanya bagian luar keping yang bersentuhan dengan larutan. Reaksi berlangsung lebih lambat.';
+  } else {
+    for(let i=0;i<49;i++){ const d=document.createElement('div'); d.style.width='11px'; d.style.height='11px'; d.style.background='var(--accent)'; d.style.borderRadius='2px'; box.appendChild(d);}
+    exp.textContent='Padatan yang sama dihaluskan menjadi banyak butiran kecil: total luas permukaan sentuh jauh lebih besar, sehingga tumbukan dengan larutan lebih sering dan reaksi lebih cepat.';
+  }
+}
+setLuas(false);
+
+// --- Katalis sim ---
+function setKat(v){
+  document.getElementById('tanpaKat').classList.toggle('active',!v);
+  document.getElementById('pakaiKat').classList.toggle('active',v);
+  document.getElementById('curveNoKat').style.display=v?'none':'block';
+  document.getElementById('curveKat').style.display=v?'block':'none';
+  document.getElementById('eaLabel').setAttribute('y', v?'54':'14');
+  document.getElementById('eaLabel').textContent = v? 'Ea rendah (jalur katalis)':'Ea tinggi (tanpa katalis)';
+  document.getElementById('katExp').textContent = v?
+    'Dengan katalis, reaksi melalui jalur alternatif dengan puncak energi aktivasi lebih rendah, sehingga lebih banyak partikel mampu melewatinya dan reaksi berlangsung lebih cepat. ΔH reaksi (selisih energi reaktan–produk) tidak berubah.' :
+    'Tanpa katalis, reaksi harus melewati energi aktivasi yang tinggi, sehingga hanya sedikit tumbukan yang berenergi cukup untuk menghasilkan reaksi.';
+}
+setKat(false);
+</script>
+</body>
+</html>
